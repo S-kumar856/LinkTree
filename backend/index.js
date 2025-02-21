@@ -2,16 +2,21 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const userRoute = require('./routes/user.routes')
-dotenv.config();
+const linkRoute = require('./routes/links.router')
 
-app.use(express.json())
+
+dotenv.config();
+app.use(express.json());
+app.use(cors());
 
 // Define the port from environment or default to 5000
 const PORT = process.env.PORT || 5000
 
 // Route middleware for user authentication (register/login)
 app.use('/api/user', userRoute);
+app.use('/api/links', linkRoute);
 
 app.get('/',(req,res)=>{
     res.send('Hello World')
