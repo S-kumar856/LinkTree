@@ -100,3 +100,64 @@ exports.loginUser = async (req, res)=>{
         res.status(500).json({success:false, message:'Interal server error'});
     }
 }
+
+// update user
+exports.updateUser = async (req, res) => {
+    const { firstName, lastName, email, oldPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    try {
+        // fetch the user
+        const user = await User.findById(userId);
+
+        // check if user exists
+        if (!user) {
+            return res.status(400).json({ success: false, msg: 'User not found' });
+        }
+
+        // update firstname if provided
+        if (firstName && firstName !== user.firstName) {
+            user.firstName = firstName;
+        }
+
+        // update lastname if provided
+        if (lastName && lastName !== user.lastName) {
+            user.lastName = lastName;
+        }
+
+        // update email if provided
+        if (email && email !== user.email) {
+            const existingEmail = await User.findOne({ email });
+            if (existingEmail) {
+                return res.status(400).json({ success: false, msg: 'Email already exists' });
+            }
+            user.email = email;
+        }
+        
+        // save the user
+        await user.save();
+
+        res.status(200).json({ success: true, msg: 'User updated successfully' });
+    } catch (error) {
+        console.error('Error in updating user:', error.message);
+        res.status(500).json({ success: false, msg: 'Internal server error' });
+    }
+}
+
+// delete user
+exports.deleteUser = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        // Find and delete the user directly
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            return res.status(400).json({ success:false, msg: 'User not found' });
+        }
+
+        res.status(200).json({ success: true, msg: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error in deleting user:', error.message);
+        res.status(500).json({ success: false, msg: 'Internal server error' });
+    }
+};
