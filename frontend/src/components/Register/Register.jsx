@@ -1,10 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
 import style from './Register.module.css'
 import loginImg from '../../assets/login.png'
 import sparkImg from '../../assets/spark.png'
-import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom'
 
 const Register = () => {
+
+    const navigate = useNavigate();
+    const [registerForm, setRegisterForm] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmpassword: '',
+    })
+
+    // handling the form input
+    const handleRegisterForm = (e) => {
+        const { name, value } = e.target
+        setRegisterForm({ ...registerForm, [name]: value })
+    }
+
+    // handling the form submission
+    const handleRegisterSubmit = async (e) => {
+        e.preventDefault()
+        // checking if the password and confirm password match
+        if (registerForm.password !== registerForm.confirmpassword) {
+            toast.error('Passwords do not match')
+        }
+
+        // sending the Registerform data to the backend
+        try {
+            const response = await axios.post("http://localhost:4000/api/user/register", registerForm);
+
+            if (response.status === 200) {
+
+                setRegisterForm({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    password: '',
+                    confirmpassword: '',
+
+                });
+                toast.success('User Registrated successfully')
+                navigate('/login')
+            }
+            else {
+                console.log(response.data)
+                toast.error('Registration failed')
+            }
+
+        } catch (error) {
+            console.error(error.response.data)
+            toast.error(error.response.data.msg)
+
+        }
+
+    };
+
     return (
         <>
             <div className={style.parent_register}>
@@ -20,26 +76,26 @@ const Register = () => {
                                 <p>Create an account</p>
                                 <Link to={'/login'}>Sign in instead</Link>
                             </div>
-                            <form className={style.form}>
+                            <form className={style.form} onSubmit={handleRegisterSubmit}>
                                 <div className={style.formFields}>
                                     <label htmlFor="firstname">First name</label><br />
-                                    <input type="text" name='firstname' />
+                                    <input type="text" name='firstName' value={registerForm.firstName} onChange={handleRegisterForm} />
                                 </div>
                                 <div className={style.formFields}>
                                     <label htmlFor="lastname">Last name</label><br />
-                                    <input type="text" name='lastname' />
+                                    <input type="text" name='lastName'  value={registerForm.lastName} onChange={handleRegisterForm} />
                                 </div>
                                 <div className={style.formFields}>
                                     <label htmlFor="email">Email</label><br />
-                                    <input type="text" name='email' />
+                                    <input type="text" name='email'  value={registerForm.email} onChange={handleRegisterForm} />
                                 </div>
                                 <div className={style.formFields}>
                                     <label htmlFor="password">Password</label><br />
-                                    <input type="password" name='password' />
+                                    <input type="password" name='password'  value={registerForm.password} onChange={handleRegisterForm} />
                                 </div>
                                 <div className={style.formFields}>
                                     <label htmlFor="confirmpassword">Confirm Password</label><br />
-                                    <input type="password" name='confirmpassword' />
+                                    <input type="password" name='confirmpassword'  value={registerForm.confirmpassword} onChange={handleRegisterForm} />
                                 </div>
                                 <div className={style.termsCondition}>
                                     <input type="checkbox" name="checkbox" id="checkbox" />

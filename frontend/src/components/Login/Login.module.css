@@ -60,6 +60,7 @@
     background-color: #EFF0EC;
     border: none;
     outline: none;
+    font-size: 1rem;
 }
 .loginFields label{
     font-family: Poppins;
@@ -67,8 +68,9 @@
     font-weight: 400;
     color: #666666;
 }
-.loginFields i{
+.loginFields .icon{
     position: absolute;
+    font-size: 1.5rem;
     right: 10px;
     top: 5vh;
     color: #666666;
@@ -139,6 +141,7 @@
     .title_spark{
         display: flex;
         align-items: center;
+        padding-left: 1vw;
     }
     .title_spark img{
         height: 5vw;
@@ -166,6 +169,12 @@
     }
     .loginBtn{
         margin-top: 3vh;
+    }
+    .forgotpassword a{
+        font-size: 0.8rem;
+    }
+    .forgotpassword p{
+        font-size: 0.8rem;
     }
     .footer_register{
         font-size: 10px;
