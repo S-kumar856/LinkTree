@@ -98,7 +98,7 @@ const Login = () => {
 
                     <div className={style.forgotpassword}>
                         <a href="#">Forgot password?</a>
-                        <p>Don't have an account? <Link to={'/'}>Sign up</Link></p>
+                        <p>Don't have an account? <Link to={'/register'}>Sign up</Link></p>
                     </div>
 
                     <div className={style.footer_register}>

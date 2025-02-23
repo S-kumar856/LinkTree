@@ -24,10 +24,10 @@ const LandingPage = () => {
                 <nav className={style.nav_spark}>
                     <div className={style.spark}>
                         <img src={sparklogo} alt="spark" />
-                        <span className={style.sparkTitle}>SPARK</span> | <span className={style.market}>Marketplace</span>
+                        <span className={style.sparkTitle}>SPARK</span> <span className={style.dash}>|</span> <span className={style.market}>Marketplace</span>
                     </div>
                     <div className={style.nav_btn}>
-                        <button onClick={()=>navigate('/register')}>Sign up free</button>
+                        <button onClick={() => navigate('/register')}>Sign up free</button>
                     </div>
                 </nav>
                 {/* container2 */}
@@ -246,8 +246,10 @@ const LandingPage = () => {
                 <div className={style.footerContainer}>
                     <div className={style.inner_footer}>
                         <div className={style.footerButtons}>
-                            <button className={style.loginBtn}>Log in</button>
-                            <button className={style.signupBtn}>Sign up free</button>
+                            <div className={style.landPage_Btn}>
+                                <button className={style.loginBtn}>Log in</button>
+                                <button className={style.signupBtn}>Sign up free</button>
+                            </div>
                         </div>
 
                         <div className={style.footerLinks}>
@@ -260,42 +262,38 @@ const LandingPage = () => {
                             </ul>
                         </div>
                         <div className={style.footerLinks}>
-                        <ul>
-                            <li>Careers</li>
-                            <li>Getting Started</li>
-                            <li>Features and How-Tos</li>
-                            <li>FAQs</li>
-                            <li>Report a Violation</li>
-                        </ul>
+                            <ul>
+                                <li>Careers</li>
+                                <li>Getting Started</li>
+                                <li>Features and How-Tos</li>
+                                <li>FAQs</li>
+                                <li>Report a Violation</li>
+                            </ul>
                         </div>
                         <div className={style.footerLinks}>
-                        <ul>
-                            <li>Terms and Conditions</li>
-                            <li>Privacy Policy</li>
-                            <li>Cookies Notice</li>
-                            <li>Trust Center</li>
-                        </ul>
+                            <ul>
+                                <li>Terms and Conditions</li>
+                                <li>Privacy Policy</li>
+                                <li>Cookies Notice</li>
+                                <li>Trust Center</li>
+                            </ul>
                         </div>
                     </div>
 
                     <div className={style.acknowledgement}>
-                    <p >
-                        We acknowledge the Traditional Custodians of the land on which our office stands, The Wurundjeri people of the Kulin Nation, and pay our respects to Elders past, present and emerging.
-                    </p>
+                        <p >
+                            We acknowledge the Traditional Custodians of the land on which our office stands, The Wurundjeri people of the Kulin Nation, and pay our respects to Elders past, present and emerging.
+                        </p>
 
-                    <div className={style.socialIcons}>
-                        <FaTwitter />
-                        <FaInstagram />
-                        <FaYoutube />
-                        <FaTiktok />
-                        <FaFire />
-                    </div>
+                        <div className={style.socialIcons}>
+                            <FaTwitter />
+                            <FaInstagram />
+                            <FaYoutube />
+                            <FaTiktok />
+                            <FaFire />
+                        </div>
                     </div>
                 </div>
-
-
-
-
             </div>
 
         </>
