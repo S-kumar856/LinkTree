@@ -101,6 +101,10 @@ exports.handleRedirect = async (req, res) => {
             return res.status(404).json({ message: "Link not found" });
         }
 
+        // Add new click record with date
+        link.clickData.push({ date: new Date() });
+        await link.save();
+
         // Increment click count
         link.clicks += 1;
         await link.save();

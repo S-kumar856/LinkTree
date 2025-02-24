@@ -21,12 +21,20 @@ const linkSchema = new mongoose.Schema({
     },
     platform: {
         type: String, // e.g., "Instagram", "YouTube", "Facebook"
-        required: true,
+        enum: ["YouTube", "Facebook", "Instagram", "Other"],
     },
     clicks: {
         type: Number,
         default: 0, // Track the number of times a link is clicked
     },
+    clickData: [
+        {
+            date: { type: Date, default: Date.now },
+        },
+    ],
+    shopClicks: { type: Number, default: 0 },
+    ctaClicks: { type: Number, default: 0 },
+
     createdAt: {
         type: Date,
         default: Date.now,

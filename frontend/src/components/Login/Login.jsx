@@ -9,7 +9,7 @@ import sparkImg from '../../assets/spark.png'
 
 const Login = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
     // uesState for login form
@@ -39,6 +39,7 @@ const Login = () => {
                 });
                 toast.success('User logged in successfully')
                 localStorage.setItem('token', response.data.token);
+                navigate('/categories');
 
             }
             else {
