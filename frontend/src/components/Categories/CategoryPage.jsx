@@ -75,7 +75,7 @@ const CategoryPage = () => {
                                 </div>
                             </div>
 
-                            <button type="submit" className={style.continueButton} onClick={() => navigate('/main')}>
+                            <button type="submit" className={style.continueButton} onClick={() => navigate('/hero')}>
                                 Continue
                             </button>
                         </form>
