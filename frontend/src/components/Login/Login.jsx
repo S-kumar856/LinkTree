@@ -58,6 +58,7 @@ const Login = () => {
         const token = localStorage.getItem('token');
         if (token) {
             toast.success("User Already Logged In");
+            navigate('/hero')
         }
     }, [])
     return (

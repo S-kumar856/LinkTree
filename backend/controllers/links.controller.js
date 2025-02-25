@@ -5,6 +5,8 @@ exports.addLink = async (req, res) => {
     try {
         let { type, title, url, platform } = req.body;
 
+        console.log("uerid:", req.user.id)
+
         // Default type is "social" if not provided
         if (!type) {
             type = "social";
@@ -103,8 +105,7 @@ exports.handleRedirect = async (req, res) => {
 
         // Add new click record with date
         link.clickData.push({ date: new Date() });
-        await link.save();
-
+      
         // Increment click count
         link.clicks += 1;
         await link.save();

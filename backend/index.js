@@ -11,6 +11,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
+
 // Define the port from environment or default to 5000
 const PORT = process.env.PORT || 5000
 

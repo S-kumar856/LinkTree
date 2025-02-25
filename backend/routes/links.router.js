@@ -6,10 +6,10 @@ const Auth = require('../middlewares/AuthMiddlewares');
 const router = express.Router();
 
 // Create a new link
-router.post("/addlink", Auth, addLink);
+router.post("/addlinks", Auth, addLink);
 
 // Get all links for a user
-router.get("/getlink", Auth, getLinks);
+router.get("/getlinks", Auth, getLinks);
 
 // Update a link
 router.put("/updatelink/:id", Auth, updateLink);

@@ -247,8 +247,8 @@ const LandingPage = () => {
                     <div className={style.inner_footer}>
                         <div className={style.footerButtons}>
                             <div className={style.landPage_Btn}>
-                                <button className={style.loginBtn}>Log in</button>
-                                <button className={style.signupBtn}>Sign up free</button>
+                                <button className={style.loginBtn} onClick={()=>navigate('/login')}>Log in</button>
+                                <button className={style.signupBtn} onClick={()=>navigate('/register')}>Sign up free</button>
                             </div>
                         </div>
 

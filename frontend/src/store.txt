@@ -1,0 +1,219 @@
+Sidebar.module.css
+.layoutContainer {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+    background-color: white;
+    border-right: 1px solid #e9ecef;
+    height: 100vh;
+    position:fixed;
+    width: 240px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: Poppins;
+  }
+  
+  .logo {
+    padding: 8px 12px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 5px;
+  }
+  
+  .sparkLogo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .navItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #676767;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+  
+  .navItem:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .navItem.active {
+    background-color: #e9ecef;
+    color: #2F9E44;
+  }
+  
+  .navItem svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .userDetails{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 0.5rem;
+  }
+  .userDetails img{
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border-radius: 50%;
+  }
+  .userDetails p{
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .outletContent {
+    margin-left: 240px;
+  /* width: calc(100% - 240px); */
+  padding: 2rem; 
+  background-color: #fff;
+  overflow-y: auto;
+  height: 100vh;
+ 
+
+  }
+  
+  @media (max-width: 768px) {
+    
+  }
+
+
+   const navItems = [
+    { icon: <LinkIcon size={20} />, label: 'Links', path: 'links' },
+    { icon: <BarChart2 size={20} />, label: 'Analytics', path: 'analytics' },
+    { icon: <Palette size={20} />, label: 'Appearance', path: 'appearance' },
+    { icon: <Settings size={20} />, label: 'Settings', path: 'settings' }
+  ];
+
+
+   <div className={style.layoutContainer}>
+      <div className={style.sidebar}>
+        <div>
+          <div className={style.logo}>
+            <img src={sparkImg} alt="logo.png" />
+            <span className={style.sparkLogo}> Spark</span>
+          </div>
+
+          <nav className={style.nav}>
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`${style.navItem} ${location.pathname === item.path ? style.active : ''
+                  }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </nav>
+
+        </div>
+        <div className={style.userDetails}>
+          <img src="#" alt="img" />
+          <p>kumar</p>
+        </div>
+      </div>
+      <main className={style.outletContent}>
+        <Outlet />
+      </main>
+    </div>
+
+
+
+
+
+
+    // components/Layout/Sidebar.jsx
+import React from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link as LinkIcon, BarChart2, Settings, Palette } from 'lucide-react';
+import style from './Sidebar.module.css';
+import sparkImg from '../../assets/spark.png'
+import UserDetails from '../../Pages/UserDetails/UserDetails';
+
+const Sidebar = () => {
+  const navigate = useNavigate()
+  const handleNavigation = (route) => {
+    navigate(route)
+  }
+  return (
+    <div className={style.Mainpage}>
+      {/* <UserDetails /> */}
+        <div className={style.sidebar_parent}>
+          <div className={style.inner_side}>
+          <div className={style.logo}>
+            <img src={sparkImg} alt="logo.png" />
+            <span className={style.sparkLogo}> Spark</span>
+          </div>
+          <div className={style.sidebar}>
+            <div className={style.links} onClick={()=>handleNavigation('links')}>
+              <p>Links</p>
+            </div>
+            <div className={style.appearance} onClick={()=>handleNavigation('appearance')}>
+              <p>Appearance</p>
+            </div>
+            <div className={style.analytics} onClick={()=>handleNavigation('analytics')}>
+              <p>Analytics</p>
+            </div>
+            <div className={style.settings} onClick={()=>handleNavigation('settings')}>
+              <p>Settings</p>
+            </div>
+          </div>
+          </div>
+          {/* outlet */}
+          <div className={style.outlet}>
+            <Outlet />
+          </div>
+      </div>
+
+
+      <div className={style.userDetails}>
+        <img src="#" alt="img" />
+        <p>kumar</p>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar
+
+
+
+const deleteLink = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:4000/api/links/deletelink/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+    } catch(error){
+      console.error("error:", error)
+    }
+
+
+  }

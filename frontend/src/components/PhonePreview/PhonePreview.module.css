@@ -1,0 +1,197 @@
+/* PhonePreview.module.css */
+ .previewContainer {
+    font-family: Poppins;
+  } 
+  
+
+  .phoneFrame {
+    width: 22vw;
+    height: 45vw;
+    border: 12px solid #343a40;
+    border-radius: 32px;
+    overflow: hidden;
+    background-color: white;
+    position: relative;
+  }
+  
+  .phoneContent {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    
+  }
+  
+  .profileSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 24px;
+    background-color: #342B26;
+    height: 22vh;
+    width: 100%;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    gap: 2vh;
+   
+  }
+  
+  .avatar {
+    width: 4vw;
+    height: 4vw;
+    border-radius: 50%;
+
+    object-fit: cover;
+  }
+  
+  .username {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+  }
+  
+  .bio {
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .linksSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 2vh;
+   
+  }
+  
+  .linkButton {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: #BFBFBF;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #1a202c;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    /* background-color: red; */
+  }
+  
+  .linkButton:hover {
+    background-color: #e9ecef;
+  }
+
+  .footer{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
+  }
+  
+  .sparkBranding {
+    display: flex;
+    align-items: center;
+    
+    padding: 16px;
+    gap: 5px;
+    font-size: 1.2rem;
+  }
+  .sparkBranding img{
+    width: 2vw;
+    height: 2vw;
+    color: black;
+  }
+  .sparkBranding span{
+    font-weight: 800;
+  }
+
+  .linkShopBtn{
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 50px;
+    padding: 0.3rem;
+    background-color: #BFBFBF;
+    cursor: pointer;
+    margin-bottom: 3vh;
+    margin-top: 2vh;
+
+
+  }
+  .linkBtn,
+.shopBtn {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4a4a4a;
+  font-family: Inter;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.active {
+  background-color: #28A263;
+  color: white;
+}
+
+.getConnected{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.getConnected button {
+  padding: 0.8rem 3rem;
+  background-color: #35CA7D;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+}
+  
+  @media (max-width: 1200px) {
+    .previewContainer {
+      display: none;
+    }
+    
+    .pageContainer {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .modalOverlay {
+      padding: 8px;
+    }
+    
+    .modal {
+      padding: 16px;
+    }
+    
+    .header h1 {
+      font-size: 20px;
+    }
+    
+    .editor {
+      padding: 16px;
+    }
+    
+    .avatarUpload {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .uploadButton {
+      width: 100%;
+    }
+  }
+  

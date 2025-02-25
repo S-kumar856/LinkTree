@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import style from './CategoryPage.module.css';
 import womenImg from '../../assets/login.png'
 import sparkImg from "../../assets/spark.png"
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const categories = [
@@ -24,12 +26,33 @@ const categories = [
 const CategoryPage = () => {
     const [username, setUsername] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    console.log(username)
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log('Form submitted:', { username, selectedCategory });
+        try {
+            const response = await axios.post("http://localhost:4000/api/user/register", username);
+
+            if (response.status === 200) {
+
+                setUsername({
+                   username:''
+
+                });
+                toast.success('User Registrated successfully')
+            }
+            else {
+                console.log(response.data)
+                toast.error('Registration failed')
+            }
+
+        } catch (error) {
+            console.error(error.response.data)
+            toast.error(error.response.data.msg)
+
+        }
     };
 
     return (

@@ -1,0 +1,35 @@
+.userDetail_main{
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+}
+.header{
+    font-family: Poppins;
+}
+.userName{
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.userText{
+    color: #383838;
+    font-size: 0.9rem;
+    padding-top: 5px;
+}
+.shareButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .shareButton:hover {
+    background-color: #f8f9fa;
+  }
+  
