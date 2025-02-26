@@ -96,7 +96,7 @@ exports.deleteLink = async (req, res) => {
 exports.handleRedirect = async (req, res) => {
     try {
         const { id } = req.params;
-
+        console.log(id)
         // Find link by ID
         const link = await Link.findById(id);
         if (!link) {
@@ -113,6 +113,7 @@ exports.handleRedirect = async (req, res) => {
         // Redirect to the actual URL
         res.redirect(link.url);
     } catch (error) {
+        console.log("error",error)
         res.status(500).json({ message: "Server error" });
     }
 };

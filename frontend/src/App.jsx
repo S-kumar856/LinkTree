@@ -9,6 +9,7 @@ import Appearance from './Pages/Appearance/Appearance'
 import Settings from './Pages/Settings/Setting'
 import Analytic from './Pages/Analytics/Analytic'
 import LinkPage from './Pages/LinkPage/LinkPage'
+// import SampleTest from './components/sampleTest/SampleTest'
 
 
 
@@ -18,6 +19,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        {/* <Route path='/test' element={<SampleTest/>} /> */}
         <Route path="/register" element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/categories' element={<CategoryPage />} />

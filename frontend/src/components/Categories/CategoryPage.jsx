@@ -6,6 +6,7 @@ import womenImg from '../../assets/login.png'
 import sparkImg from "../../assets/spark.png"
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useAppContext } from '../AppContext';
 
 
 const categories = [
@@ -24,7 +25,7 @@ const categories = [
 ];
 
 const CategoryPage = () => {
-    const [username, setUsername] = useState('');
+    const { username, setUsername } = useAppContext();
     const [selectedCategory, setSelectedCategory] = useState('');
     console.log(username)
 
@@ -33,14 +34,21 @@ const CategoryPage = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:4000/api/user/register", username);
+            const response = await axios.post("http://localhost:4000/api/user/userdetails",
+                {
+                    username: username.username,
+                },
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                }
+            );
 
             if (response.status === 200) {
 
                 setUsername({
                    username:''
-
                 });
+                console.log(response)
                 toast.success('User Registrated successfully')
             }
             else {
@@ -73,8 +81,8 @@ const CategoryPage = () => {
                             <input
                                 type="text"
                                 placeholder="Tell us your username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={username.username}
+                                onChange={(e) => setUsername({username: e.target.value})}
                                 className={style.input}
                             />
 

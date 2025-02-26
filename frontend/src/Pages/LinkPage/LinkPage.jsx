@@ -9,46 +9,71 @@ import styles from './LinkPage.module.css';
 import avatarImg from '../../assets/avatar.png'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useAppContext } from '../../components/AppContext';
 
 
 const LinkPage = () => {
+  const { linkData } = useAppContext();
+  const [currentId, setCurrentId] = useState(null)
   const [active, setActive] = useState('link');
-  const [profile, setProfile] = useState({
-    username: '@opopo_08',
-    avatar: '/api/placeholder/100/100',
-    bio: ''
-  });
+  const { userRegisterData, setUserRegisterData, links, setLinks } = useAppContext();
 
-  console.log("links page")
-  const [links, setLinks] = useState([]);
+  const predefinedColors = ["#3E3129", "#FFFFFF", "#000000"];
+  const [selectedColor, setSelectedColor] = useState("#3E3129");
 
-  useEffect(()=>{
-    fetchLinks();
-  },[])
+  console.log("currebtid:", currentId)
+  // Save selected color to local storage (optional)
+  useEffect(() => {
+    const savedColor = localStorage.getItem("bannerColor");
+    if (savedColor) setSelectedColor(savedColor);
+  }, []);
+
+  const handleColorChange = (color) => setSelectedColor(color);
+
+  const handleSave = () => {
+    localStorage.setItem("bannerColor", selectedColor);
+    alert("Background color saved!");
+  };
+
+  // const [links, setLinks] = useState([]);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleAddLink = (newLink) => {
     setLinks([...links, newLink]);
   };
 
   // fetching links from the backend
-  const fetchLinks = async () =>{
+  
+
+
+  // handle update links
+
+  const handleUpdateLinks = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get("http://localhost:4000/api/links/getlinks",
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
-      if(response.data){
-        setLinks(response.data)
-        toast.success("fetched links successfully");
+      const response = await axios.put(`http://localhost:4000/api/links/updatelink/${currentId}`,
+        {
+          title: linkData.title,
+          url: linkData.url,
+          platform: linkData.platform
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      console.log(response.data)
+      if (response.data) {
+
+        toast.success("link updated successfully");
       }
-      
     } catch (error) {
-      console.error("error:", error.response?.data || error.message)
-      toast.error("error fetching links")
+      console.log("error in updating the Url", error);
+      toast.error("Error updating the Url")
     }
-  }
+  };
+
+
 
   // deleting links 
   const deleteLink = async (id) => {
@@ -60,7 +85,7 @@ const LinkPage = () => {
       );
       setLinks((prevLinks) => prevLinks.filter((link) => link._id !== id));
       toast.success("Link deleted successfully");
-    } catch(error){
+    } catch (error) {
       console.error("Delete Error:", error.response?.data || error.message);
       toast.error("Error deleting link");
     }
@@ -68,11 +93,17 @@ const LinkPage = () => {
 
   }
 
+  // updateId
+  const updateId = (id) => {
+    setCurrentId(id);
+    setIsModalOpen(true);
+
+  }
+
   return (
     <>
       <div className={styles.pageContainer}>
         <div className={styles.content}>
-
           <div className={styles.editor}>
             <p>Profile</p>
             <section className={styles.profileSection}>
@@ -102,14 +133,14 @@ const LinkPage = () => {
                 type="text"
                 placeholder="Profile Title"
                 className={styles.input}
-                value={profile.username}
-                onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+                value={userRegisterData.username}
+                onChange={(e) => setUserRegisterData({ ...userRegisterData, username: e.target.value })}
               />
               <textarea
                 placeholder="Bio"
                 className={styles.textarea}
-                value={profile.bio}
-                onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                value={userRegisterData.bio}
+                onChange={(e) => setUserRegisterData({ ...userRegisterData, bio: e.target.value })}
               />
             </section>
 
@@ -145,13 +176,13 @@ const LinkPage = () => {
                       <div className={styles.links_update}>
                         <div className={styles.title_update}>
                           {links.title}
-                          <i className="fa-solid fa-pen"></i>
+                          <i className="fa-solid fa-pen" onClick={()=>updateId(links._id)}></i>
 
                         </div>
                         <div className={styles.url_update}>
                           <div className={styles.inner_url}>
                             {links.url}
-                            <i className="fa-solid fa-pen"></i>
+                            {/* <i className="fa-solid fa-pen"></i> */}
                           </div>
                           <div className={styles.toggle}>
                             hi
@@ -160,11 +191,11 @@ const LinkPage = () => {
                       </div>
                       <div className={styles.linksCicks}>
                         <div className={styles.clicks}>
-                          <i className="fa-solid fa-chart-simple"></i>
+                          <i className="fa-solid fa-chart-simple" ></i>
                           <p>{links.clicks}</p>
                           <p>clicks</p>
                         </div>
-                        <div className={styles.deleteIcon} onClick={()=>deleteLink(links._id)}>
+                        <div className={styles.deleteIcon} onClick={() => deleteLink(links._id)}>
                           <i className="fa-solid fa-trash"></i>
                         </div>
                       </div>
@@ -172,20 +203,55 @@ const LinkPage = () => {
                   )
                 })}
               </div>
+            </section>
+            {/* banner section */}
+            <section>
+              <div className={styles.bannerContainer}>
+                <h3>Banner</h3>
+                <div className={styles.bannerContent}>
+                  <div className={styles.banner} style={{ backgroundColor: selectedColor }}>
+                    <img className={styles.avatar} src={avatarImg} alt="Profile" />
+                    <p className={styles.username}>{userRegisterData.username}</p>
+                  </div>
 
-              {/* click and delete icon */}
+                  <div className={styles.colorSection}>
+                    <p>Custom Background Color</p>
+                    <div className={styles.colors}>
+                      {predefinedColors.map((color) => (
+                        <div
+                          key={color}
+                          className={`${styles.colorCircle} ${selectedColor === color ? styles.active : ""}`}
+                          style={{ backgroundColor: color }}
+                          onClick={() => handleColorChange(color)}
+                        />
+                      ))}
+                    </div>
 
+                    <div className={styles.colorPicker}>
+                      <input
+                        type="color"
+                        value={selectedColor}
+                        onChange={(e) => handleColorChange(e.target.value)}
+                      />
+                      <input type="text" value={selectedColor} readOnly />
+                    </div>
+                  </div>
+                </div>
 
+                <button className={styles.saveBtn} onClick={handleSave}>Save</button>
+              </div>
             </section>
           </div>
         </div>
-
-        <PhonePreview profile={profile} links={links} />
+        <div className={styles.PhonePreview}>
+          <PhonePreview links={links} color={selectedColor} />
+        </div>
 
         <AddLinkModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onAdd={handleAddLink}
+          updatFun = {handleUpdateLinks}
         />
       </div>
     </>

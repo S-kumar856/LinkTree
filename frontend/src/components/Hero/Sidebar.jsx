@@ -4,9 +4,12 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Link as LinkIcon, BarChart2, Settings, Palette } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import sparkImg from '../../assets/spark.png'
+import avatarImg from '../../assets/avatar.png'
+import { useAppContext } from '../AppContext';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { userRegisterData } = useAppContext();
   
   const navItems = [
     { icon: <LinkIcon size={20} />, label: 'Links', path: 'links' },
@@ -14,6 +17,8 @@ const Sidebar = () => {
     { icon: <Palette size={20} />, label: 'Appearance', path: 'appearance' },
     { icon: <Settings size={20} />, label: 'Settings', path: 'settings' }
   ];
+
+
 
   return (
     <div className={styles.main}>
@@ -39,6 +44,15 @@ const Sidebar = () => {
         ))}
       </nav>
       </div>
+    <div className={styles.user}>
+          <img src={avatarImg} alt="img" />
+          
+
+            <p>{userRegisterData.firstName} {userRegisterData.lastName}  </p>
+           
+
+      
+        </div>
     </div>
     </div>
   );

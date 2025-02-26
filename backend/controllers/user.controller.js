@@ -47,6 +47,20 @@ exports.RegisterUser = async(req, res)=>{
     }
 }
 
+exports.userDetails = async(req,res)=>{
+    const {username, bio, color} = req.body;
+    try {
+        const user = await User.findById(req.user.id);
+        user.username = username;
+        user.bio = bio;
+        user.color = color;
+        await user.save();
+        res.status(200).json({message:"userdetails created"})
+    } catch (error) {
+        res.status(500).json({message: "error in userDetils"});
+    }
+}
+
 // get all users
 exports.getUsers = async(req,res)=>{
     try {

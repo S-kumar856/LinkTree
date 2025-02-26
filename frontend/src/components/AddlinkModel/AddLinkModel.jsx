@@ -5,9 +5,9 @@ import { useAppContext } from '../AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const AddLinkModal = ({ isOpen, onClose, onAdd}) => {
+const AddLinkModal = ({ isOpen, onClose, onAdd , updateFun}) => {
   const [linkType, setLinkType] = useState('link'); // 'link' or 'shop'
-  const {linkData, setLinkData} = useAppContext();
+  const {linkData, setLinkData, links, setLinks} = useAppContext();
 
   // add links to backend
 
@@ -23,7 +23,6 @@ const AddLinkModal = ({ isOpen, onClose, onAdd}) => {
           title: linkData.title,
           url: linkData.url,
           platform: linkData.platform
-
         },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

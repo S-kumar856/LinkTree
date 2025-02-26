@@ -23,4 +23,6 @@ router.get("/redirect/:id", handleRedirect);
 // Get analytics data
 router.get("/analytics", Auth, getAnalytics);
 
+
+
 module.exports = router;

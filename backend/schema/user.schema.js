@@ -11,6 +11,13 @@ const userSchema = new mongoose.Schema({
     username:{
         type:String,
     },
+    bio:{
+        type:String,
+    },
+    color:{
+        type:String,
+        default:"#000000"
+    },
     email:{
         type:String,
         required:true,

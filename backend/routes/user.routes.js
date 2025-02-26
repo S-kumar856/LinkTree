@@ -1,6 +1,6 @@
 const express = require('express');
 const {check, validationResult} = require('express-validator');
-const { RegisterUser, getUsers, loginUser, updateUser, deleteUser } = require('../controllers/user.controller');
+const { RegisterUser, getUsers, loginUser, updateUser, deleteUser,userDetails } = require('../controllers/user.controller');
 const Auth = require('../middlewares/AuthMiddlewares')
 
 
@@ -38,6 +38,8 @@ router.put('/updateuser', Auth, updateUser)
 
 // delete user
 router.delete('/deleteuser', Auth, deleteUser)
+
+router.post('/userdetails', Auth, userDetails);
 
 
 
