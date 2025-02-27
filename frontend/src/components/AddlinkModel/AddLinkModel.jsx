@@ -1,43 +1,91 @@
-// components/AddLinkModal/AddLinkModal.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AddLinkModel.module.css';
 import { useAppContext } from '../AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const AddLinkModal = ({ isOpen, onClose, onAdd , updateFun}) => {
-  const [linkType, setLinkType] = useState('link'); // 'link' or 'shop'
-  const {linkData, setLinkData, links, setLinks} = useAppContext();
-
-  // add links to backend
+const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
+  const { linkData, setLinkData, links } = useAppContext();
+  const [linkType, setLinkType] = useState(modalType || 'link'); // Initialize with modalType
 
 
+  useEffect(() => {
+    setLinkType(modalType || 'link'); // Ensure modalType is used when opening modal
+    if (updateId) {
+      // Find the existing data to prefill fields
+      const existingData = links.find((item) => item._id === updateId);
+    
+      if (existingData) {
+        setLinkData(existingData);
+      }
+    } else {
+      // Reset form when adding a new link/shop
+      setLinkData(
+        modalType === "shop"
+          ? { shopTitle: "", shopUrl: "", type: "shop" }
+          : { title: "", url: "", platform: "", type: "link" }
+      );
+    }
+  }, [modalType, isOpen, updateId, links]);
 
-  const handleSubmit = async(e) => {
-    console.log("Token:", localStorage.getItem("token"));
-    console.log(linkData)
+  const handleTabSwitch = (type) => {
+    setLinkType(type);
+    setLinkData(
+      type === "shop"
+        ? { shopTitle: "", shopUrl: "", type: "shop" }
+        : { title: "", url: "", platform: "", type: "link" }
+    ); // Reset form fields when switching tabs
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:4000/api/links/addlinks",
-        {
+    const payload =
+      linkType === "shop"
+        ? { shopTitle: linkData.shopTitle, shopUrl: linkData.shopUrl, type: "shop" }
+        : {
           title: linkData.title,
           url: linkData.url,
-          platform: linkData.platform
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+          platform: linkData.platform,
+          type: "link"
+        };
 
-        if(response.data){
-          toast.success("link created successfully")
-         
-          onAdd({ ...linkData, type: linkType });
-         
+    console.log("Payload being sent:", payload);
+    console.log("Updated linkData:", linkData)
+
+
+    try {
+      if (updateId) {
+        // Update existing link
+        const response = await axios.put(
+          `http://localhost:4000/api/links/updatelinks/${updateId}`,
+          payload,
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+
+        if (response.data) {
+          toast.success(`${linkType === 'shop' ? "Shop" : "link"} updated successfully`);
         }
-        console.log("links:", linkData)
+
+      } else {
+        // Add new link or shop
+        const response = await axios.post(
+          "http://localhost:4000/api/links/addlinks",
+          payload,
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+
+        if (response.data) {
+          toast.success(`${linkType === 'shop' ? "Shop" : "Link"} created successfully`);
+          onAdd({ ...linkData, type: linkType });
+        }
+      }
     } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
-      toast.error("Error creating the links")
+      console.error("Error Response:", error.response?.data || error.message)
+      toast.error("Error in creating in link");
     }
     onClose();
   };
@@ -48,7 +96,7 @@ const AddLinkModal = ({ isOpen, onClose, onAdd , updateFun}) => {
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
-          <h2>Enter URL</h2>
+          <h2>{updateId ? `Edit ${linkType === 'shop' ? 'Shop' : 'Link'}` : `Add ${linkType === 'shop' ? 'Shop' : 'Link'}`}</h2>
           <button className={styles.closeButton} onClick={onClose}>×</button>
         </div>
 
@@ -56,13 +104,13 @@ const AddLinkModal = ({ isOpen, onClose, onAdd , updateFun}) => {
           <div className={styles.tabGroup}>
             <button
               className={`${styles.tab} ${linkType === 'link' ? styles.active : ''}`}
-              onClick={() => setLinkType('link')}
+              onClick={() => handleTabSwitch('link')}
             >
               Add Link
             </button>
             <button
               className={`${styles.tab} ${linkType === 'shop' ? styles.active : ''}`}
-              onClick={() => setLinkType('shop')}
+              onClick={() => handleTabSwitch('shop')}
             >
               Add Shop
             </button>
@@ -70,39 +118,51 @@ const AddLinkModal = ({ isOpen, onClose, onAdd , updateFun}) => {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
-              <label>Link title</label>
+              <label>{linkType === 'shop' ? 'Shop Name' : 'Link Title'}</label>
               <input
                 type="text"
-                value={linkData.title}
-                onChange={(e) => setLinkData({ ...linkData, title: e.target.value })}
-                placeholder="Enter link title"
+                value={linkType === 'link' ? linkData.title : linkData.shopTitle}
+                onChange={(e) =>
+                  linkType === 'shop'
+                    ? setLinkData({ ...linkData, shopTitle: e.target.value })
+                    : setLinkData({ ...linkData, title: e.target.value })
+                }
+                
+              placeholder={linkType === 'shop' ? 'Enter Shop Name' : 'Enter Link Title'}
               />
             </div>
 
             <div className={styles.inputGroup}>
-              <label>URL</label>
+              <label>{linkType === 'shop' ? 'Shop URL' : 'URL'}</label>
               <input
                 type="url"
-                value={linkData.url}
-                onChange={(e) => setLinkData({ ...linkData, url: e.target.value })}
-                placeholder="Enter URL"
+                value={linkType === 'shop' ? linkData.shopUrl : linkData.url}
+                onChange={(e) =>
+                  linkType === 'shop'
+                    ? setLinkData({ ...linkData, shopUrl: e.target.value })
+                    : setLinkData({ ...linkData, url: e.target.value })
+                }
+                placeholder={linkType === 'shop' ? 'Enter Shop URL' : 'Enter URL'}
               />
             </div>
 
-            <div className={styles.applications}>
-              <div className={styles.appIcons}>
-                 <label>platform</label>
-              <input
-                type="text"
-                value={linkData.platform}
-                onChange={(e) => setLinkData({ ...linkData, platform: e.target.value })}
-                placeholder="Enter URL"
-              />
+            {linkType === 'link' && (
+              <div className={styles.applications}>
+                <div className={styles.appIcons}>
+                  <label>Platform</label>
+                  <input
+                    type="text"
+                    value={linkData.platform}
+                    onChange={(e) => setLinkData({ ...linkData, platform: e.target.value })}
+                    placeholder="Enter Platform"
+                  />
+                </div>
               </div>
-            </div>
+            )}
+
 
             <button type="submit" className={styles.addButton}>
-              Add
+              {updateId ? "Update" : "Add"}
             </button>
           </form>
         </div>

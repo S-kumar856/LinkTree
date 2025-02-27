@@ -8,7 +8,10 @@ export const AppProvider = ({ children }) => {
       const [linkData, setLinkData] = useState({
         title: '',
         url: '',
-        platform:''
+        platform:'',
+        shopTitle:'',
+        shopUrl:'',
+        type: 'link',
       });
 
       // for userdetials

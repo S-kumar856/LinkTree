@@ -3,25 +3,17 @@ import React, { useState } from 'react';
 import styles from './PhonePreview.module.css';
 import avatar from '../../assets/avatar.png'
 import sprakImg from '../../assets/spark.png'
-import axios from 'axios';
+import { FaShoppingCart } from 'react-icons/fa';
 import { useAppContext } from '../AppContext';
 
 const PhonePreview = ({ links, color }) => {
   const [active, setActive] = useState('link');
-  const [urlId, setUrlId] = useState(null)
+  const { userRegisterData } = useAppContext();
 
-   const { userRegisterData } = useAppContext();
-  
-  const redirectUrl = async () =>{
-      const url = await axios.get(`http://localhost:4000/api/links/redirect/${urlId}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      console.log(url)
-      console.log(url.data)
-  }
-
+  // redirect url
+  const redirectUrl = (id) => {
+    window.open(`http://localhost:4000/api/links/redirect/${id}`, "_blank");
+  };
 
   return (
     <div className={styles.previewContainer}>
@@ -29,7 +21,7 @@ const PhonePreview = ({ links, color }) => {
       <div className={styles.phoneFrame}>
         <div className={styles.phoneContent}>
           <div className={styles.profileSection}
-           style={{ backgroundColor: color }}
+            style={{ backgroundColor: color }}
           >
             <img
               src={avatar}
@@ -57,16 +49,38 @@ const PhonePreview = ({ links, color }) => {
 
           <div className={styles.linksSection}>
             {links.map((link, index) => (
+              <>
+                {active === 'link' ? (
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      redirectUrl(link._id)
+                    }}
+                    key={index}
+                    className={`${styles.linkButton} ${styles[link.type]}`}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    {link.title}
+                  </a>
+                ) : (
+                  <div className={styles.shopCard}>
+                  <div className={styles.inner_shopcard}>
+                    <img
+                      src={link.shopUrl}
+                      alt="image"
+                      className={styles.productImage}
+                    />
+                    <p className={styles.productTitle}>{link.shopTitle}</p>
+                    <button className={styles.buyButton}>
+                      <FaShoppingCart className={styles.cartIcon} />
+                      Buy Now
+                    </button>
+                    </div>
+                  </div>
 
-              <a
-                onClick={()=>{setUrlId(link._id),redirectUrl()} }
-                key={index}
-                // href={link.url}
-                className={`${styles.linkButton} ${styles[link.type]}`}
-                target="_blank"
-                rel="noopener noreferrer">
-                {link.title}
-              </a>
+                )}
+
+              </>
             ))}
           </div>
 

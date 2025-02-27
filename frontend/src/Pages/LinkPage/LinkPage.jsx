@@ -16,12 +16,12 @@ const LinkPage = () => {
   const { linkData } = useAppContext();
   const [currentId, setCurrentId] = useState(null)
   const [active, setActive] = useState('link');
+  const [modalType, setModalType] = useState(''); 
   const { userRegisterData, setUserRegisterData, links, setLinks } = useAppContext();
 
   const predefinedColors = ["#3E3129", "#FFFFFF", "#000000"];
   const [selectedColor, setSelectedColor] = useState("#3E3129");
 
-  console.log("currebtid:", currentId)
   // Save selected color to local storage (optional)
   useEffect(() => {
     const savedColor = localStorage.getItem("bannerColor");
@@ -43,35 +43,40 @@ const LinkPage = () => {
     setLinks([...links, newLink]);
   };
 
+  const handleAddClick = () => {
+    setModalType(active); // Set modal type based on current selection
+    setIsModalOpen(true); // Open the modal
+  };
+
   // fetching links from the backend
   
 
 
   // handle update links
 
-  const handleUpdateLinks = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(`http://localhost:4000/api/links/updatelink/${currentId}`,
-        {
-          title: linkData.title,
-          url: linkData.url,
-          platform: linkData.platform
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      console.log(response.data)
-      if (response.data) {
+  // const handleUpdateLinks = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.put(`http://localhost:4000/api/links/updatelink/${currentId}`,
+  //       {
+  //         title: linkData.title,
+  //         url: linkData.url,
+  //         platform: linkData.platform
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //       }
+  //     );
+  //     console.log(response.data)
+  //     if (response.data) {
 
-        toast.success("link updated successfully");
-      }
-    } catch (error) {
-      console.log("error in updating the Url", error);
-      toast.error("Error updating the Url")
-    }
-  };
+  //       toast.success("link updated successfully");
+  //     }
+  //   } catch (error) {
+  //     console.log("error in updating the Url", error);
+  //     toast.error("Error updating the Url")
+  //   }
+  // };
 
 
 
@@ -163,7 +168,7 @@ const LinkPage = () => {
               </div>
               <button
                 className={styles.addButton}
-                onClick={() => setIsModalOpen(true)}
+                onClick={handleAddClick}
               >
                 + Add
               </button>
@@ -172,17 +177,18 @@ const LinkPage = () => {
               <div className={styles.links_detail}>
                 {links.map((links, index) => {
                   return (
+                    
                     <div key={index} className={styles.linkItem}>
                       <div className={styles.links_update}>
                         <div className={styles.title_update}>
-                          {links.title}
+                          {active === 'link' ? links.title : links.shopTitle}
                           <i className="fa-solid fa-pen" onClick={()=>updateId(links._id)}></i>
 
                         </div>
                         <div className={styles.url_update}>
                           <div className={styles.inner_url}>
-                            {links.url}
-                            {/* <i className="fa-solid fa-pen"></i> */}
+                            {active === 'link' ? links.url : links.shopUrl}
+                         
                           </div>
                           <div className={styles.toggle}>
                             hi
@@ -251,7 +257,8 @@ const LinkPage = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onAdd={handleAddLink}
-          updatFun = {handleUpdateLinks}
+          updateId = {currentId}
+          type={modalType}
         />
       </div>
     </>
