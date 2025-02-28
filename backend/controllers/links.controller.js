@@ -65,6 +65,7 @@ exports.updateLink = async (req, res) => {
     try {
         const { type, title, url, platform, shopTitle, shopUrl } = req.body;
         const link = await Link.findById(req.params.id);
+        console.log("update:", link);
 
         if (!link) {
             return res.status(404).json({ message: "Link not found" });
@@ -100,27 +101,44 @@ exports.updateLink = async (req, res) => {
 
 exports.deleteLink = async (req, res) => {
     try {
-        // Find link by ID
+        // Fetch link by ID
         const link = await Link.findById(req.params.id);
+        console.log("Fetched link:", link); // Debugging output
 
-        if (!link) {
-            return res.status(404).json({ message: "Link not found" });
+        if (!link || !link.type) {
+            return res.status(400).json({ message: "Invalid or missing type in database" });
         }
 
-        // Ensure the logged-in user owns the link
-      
-        if (link.user.toString() !== req.user.id) {
+        let item;
+
+        if (link.type === "link") {
+            item = await Link.findById(link._id);
+        } else if (link.type === "shop") {
+            item = await Shop.findById(link._id);
+        } else {
+            return res.status(400).json({ message: "Invalid type" });
+        }
+
+        if (!item) {
+            return res.status(404).json({ message: "Item not found" });
+        }
+
+        if (item.user.toString() !== req.user.id) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        // Delete the link
-        await Link.deleteOne();
-        res.status(200).json({ message: "Link deleted successfully" });
+        // Delete the correct type
+        await item.deleteOne();
+        
+        res.status(200).json({ message: `${link.type} deleted successfully` });
+
     } catch (error) {
         console.error("Delete Error:", error);
         res.status(500).json({ message: "Server error" });
     }
 };
+
+
 
 exports.handleRedirect = async (req, res) => {
     try {

@@ -9,15 +9,16 @@ const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
   const [linkType, setLinkType] = useState(modalType || 'link'); // Initialize with modalType
 
 
+
   useEffect(() => {
     setLinkType(modalType || 'link'); // Ensure modalType is used when opening modal
     if (updateId) {
       // Find the existing data to prefill fields
       const existingData = links.find((item) => item._id === updateId);
-    
       if (existingData) {
-        setLinkData(existingData);
+        setLinkData({...existingData});
       }
+
     } else {
       // Reset form when adding a new link/shop
       setLinkData(
@@ -27,6 +28,7 @@ const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
       );
     }
   }, [modalType, isOpen, updateId, links]);
+
 
   const handleTabSwitch = (type) => {
     setLinkType(type);
@@ -41,16 +43,14 @@ const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
     e.preventDefault();
     const payload =
       linkType === "shop"
-        ? { shopTitle: linkData.shopTitle, shopUrl: linkData.shopUrl, type: "shop" }
+        ? { shopTitle: linkData.shopTitle, shopUrl: linkData.shopUrl, type: "shop", _id: updateId }
         : {
           title: linkData.title,
           url: linkData.url,
           platform: linkData.platform,
-          type: "link"
+          type: "link",
+          _id: updateId
         };
-
-    console.log("Payload being sent:", payload);
-    console.log("Updated linkData:", linkData)
 
 
     try {
@@ -66,6 +66,13 @@ const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
 
         if (response.data) {
           toast.success(`${linkType === 'shop' ? "Shop" : "link"} updated successfully`);
+          // setLinkData((prevLinks) =>
+          //   prevLinks.map((link) => (link._id === updateId ? { ...link, ...payload } : link))
+          // );
+          
+        }
+        else{
+          toast.error("Failed to update link");
         }
 
       } else {
@@ -80,7 +87,11 @@ const AddLinkModal = ({ isOpen, onClose, onAdd, updateId, modalType }) => {
 
         if (response.data) {
           toast.success(`${linkType === 'shop' ? "Shop" : "Link"} created successfully`);
+          
           onAdd({ ...linkData, type: linkType });
+        }
+        else{
+          toast.error(`Error in Creating ${linkType === 'shop' ? "Shop" : "Link"}`);
         }
       }
     } catch (error) {

@@ -9,6 +9,7 @@ import { useAppContext } from '../AppContext';
 const PhonePreview = ({ links, color }) => {
   const [active, setActive] = useState('link');
   const { userRegisterData } = useAppContext();
+  
 
   // redirect url
   const redirectUrl = (id) => {
@@ -48,7 +49,9 @@ const PhonePreview = ({ links, color }) => {
           </div>
 
           <div className={styles.linksSection}>
-            {links.map((link, index) => (
+            {links
+            .filter((link) => link.type === active)
+            .map((link, index) => (
               <>
                 {active === 'link' ? (
                   <a

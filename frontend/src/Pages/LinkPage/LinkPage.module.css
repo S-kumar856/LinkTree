@@ -7,14 +7,14 @@
   align-items: center;
   gap: 5vw;
   font-family: Inter;
-
+  position: relative;          
+  /* height: 100vh; */
+  /* max-height: 100%; */
 }
-
-/* .PhonePreview{
-  position: sticky;
-  top: 0;
-  height: 70vw;
-} */
+.content{
+  /* height: 100vh; */
+  /* min-height: 100%; */
+}
 
 .header {
   margin-bottom: 32px;
@@ -32,11 +32,15 @@
   font-size: 16px;
 }
 
-/* .editor {
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  } */
+.PhonePreview{
+  position: sticky;
+  top: 0;
+  bottom: 0;
+}
+
+.phonePreviewButton{
+  display: none;
+}
 
 .profileSection {
   margin-bottom: 32px;
@@ -46,7 +50,6 @@
   width: 40vw;
   border-radius: 20px;
   padding: 20px;
-
 }
 
 .editor p {
@@ -182,14 +185,6 @@
   color: #28a263;
 }
 
-/* .linkIcon {
-    font-size: 24px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  } */
 
 .linkInput {
   flex: 1;
@@ -228,7 +223,7 @@
   display: flex;
   justify-content: space-around;
   border-radius: 50px;
-  padding: 0.3rem;
+  padding: 0.5rem;
   background-color: #f3f3f1;
   cursor: pointer;
   margin-bottom: 3vh;
@@ -237,8 +232,7 @@
 .linkBtn,
 .shopBtn {
   width: 100%;
-  text-align: center;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
@@ -261,7 +255,6 @@
 
 .bannerContainer {
   width: 40vw;
-
   margin-top: 8vh;
 }
 
@@ -271,7 +264,6 @@
   margin-bottom: 16px;
 }
 .bannerContent{
-
   margin: 20px auto;
   padding: 20px;
   background-color: white;
@@ -351,7 +343,8 @@
 }
 
 .saveBtn {
-  width: 100%;
+  width: 30%;
+  float: right;
   margin-top: 20px;
   padding: 10px 0;
   background-color: #2aa749;
@@ -367,3 +360,115 @@
   background-color: #21843a;
 }
 
+
+/* Media query for max-width: 786px */
+/* Media Query for max-width: 786px */
+@media (max-width: 786px) {
+  .pageContainer {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2vw;
+  }
+
+  .profileSection, 
+  .linksSection, 
+  .bannerContainer {
+    width: 90vw;
+  }
+
+  /* .PhonePreview {
+    display: none;
+  } */
+
+  .phonePreviewButton {
+    display: block;
+    position: fixed;
+    top: 90vh;
+    padding: 10px 16px;
+    background-color: #28a263;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+
+  .phonePreviewButton:active {
+    background-color: #21843a;
+  }
+
+  .PhonePreview.active {
+    display: block;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Media Query for max-width: 486px */
+@media (max-width: 486px) {
+  .pageContainer {
+    gap: 3vw;
+  }
+
+  .profileSection, 
+  .linksSection, 
+  .bannerContainer {
+    width: 95vw;
+    padding: 15px;
+  }
+
+  .banner {
+    padding: 15px;
+  }
+
+  /* .PhonePreview {
+    display: none;
+  } */
+
+  .phonePreviewButton {
+    text-align: center;
+  }
+}
+
+/* Banner Section Responsive */
+@media (max-width: 786px) {
+  .banner {
+    padding: 15px;
+  }
+
+  .banner h3 {
+    font-size: 14px;
+  }
+
+  .colorSection {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .colorPicker {
+    gap: 8px;
+  }
+
+  .colorPicker input[type="color"] {
+    width: 35px;
+    height: 35px;
+  }
+
+  .colorPicker input[type="text"] {
+    width: 80px;
+  }
+
+  .saveBtn {
+    width: 50%;
+    font-size: 14px;
+  }
+}

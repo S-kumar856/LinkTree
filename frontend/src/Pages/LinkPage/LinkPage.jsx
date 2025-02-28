@@ -1,6 +1,6 @@
 
 // pages/Links/LinksPage.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef  } from 'react';
 import Hero from '../../components/Hero/HeroPage'
 import PhonePreview from '../../components/PhonePreview/PhonePreview';
 import AddLinkModal from '../../components/AddlinkModel/AddLinkModel';
@@ -14,6 +14,7 @@ import { useAppContext } from '../../components/AppContext';
 
 const LinkPage = () => {
   const { linkData } = useAppContext();
+  const [showPhonePreview, setShowPhonePreview] = useState(false);
   const [currentId, setCurrentId] = useState(null)
   const [active, setActive] = useState('link');
   const [modalType, setModalType] = useState(''); 
@@ -21,12 +22,23 @@ const LinkPage = () => {
 
   const predefinedColors = ["#3E3129", "#FFFFFF", "#000000"];
   const [selectedColor, setSelectedColor] = useState("#3E3129");
+  const [file, setFile] = useState(null);
+  console.log(file)
+
 
   // Save selected color to local storage (optional)
   useEffect(() => {
     const savedColor = localStorage.getItem("bannerColor");
     if (savedColor) setSelectedColor(savedColor);
   }, []);
+
+  // file manager
+  const fileInput = useRef(null);
+  const handleOpenFileManager = () => {
+    fileInput.current.click();
+  };
+
+ 
 
   const handleColorChange = (color) => setSelectedColor(color);
 
@@ -35,7 +47,7 @@ const LinkPage = () => {
     alert("Background color saved!");
   };
 
-  // const [links, setLinks] = useState([]);
+
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,8 +56,9 @@ const LinkPage = () => {
   };
 
   const handleAddClick = () => {
+    setCurrentId(null); // Reset currentId when adding a new link
     setModalType(active); // Set modal type based on current selection
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(!isModalOpen); // Open the modal
   };
 
   // fetching links from the backend
@@ -81,27 +94,28 @@ const LinkPage = () => {
 
 
   // deleting links 
-  const deleteLink = async (id) => {
+  const deleteLink = async (id, type) => {
+    console.log("delete id:", id)
+    console.log("delete type:", type)
     try {
-      const response = await axios.delete(`http://localhost:4000/api/links/deletelink/${id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      setLinks((prevLinks) => prevLinks.filter((link) => link._id !== id));
-      toast.success("Link deleted successfully");
+      const response = await axios.delete(`http://localhost:4000/api/links/deletelink/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+  
+      setLinks((prevLinks) => prevLinks.filter((link) => !(link._id === id && link.type === type)));
+  
+      toast.success(`${type === "shop" ? "Shop" : "Link"} deleted successfully`);
     } catch (error) {
       console.error("Delete Error:", error.response?.data || error.message);
-      toast.error("Error deleting link");
+      toast.error(`Error deleting ${type === "shop" ? "shop" : "link"}`);
     }
-
-
-  }
+  };
+  
 
   // updateId
   const updateId = (id) => {
     setCurrentId(id);
-    setIsModalOpen(true);
+    setIsModalOpen(!isModalOpen);
 
   }
 
@@ -114,20 +128,20 @@ const LinkPage = () => {
             <section className={styles.profileSection}>
               <div className={styles.avatarUpload}>
                 <img
-                  src={avatarImg}
+                  src={file}
                   alt="Profile"
                   className={styles.avatar}
                 />
                 <div className={styles.profileBtn}>
-                  <button className={styles.uploadButton}>
+                  <button className={styles.uploadButton} onClick={handleOpenFileManager}>
                     Pick an image
                   </button>
                   <input
                     type="file"
                     accept="image/*"
-                    // ref={fileInputRef}
+                    ref={fileInput}
                     style={{ display: 'none' }}
-                  // onChange={handleFileChange}
+                    onChange={(e)=>setFile(e.target.files[0])}
                   />
                   <button className={styles.removeButton}>
                     Remove
@@ -175,7 +189,9 @@ const LinkPage = () => {
 
               {/* url details */}
               <div className={styles.links_detail}>
-                {links.map((links, index) => {
+                {links
+                .filter((link) => link.type === active)
+                .map((links, index) => {
                   return (
                     
                     <div key={index} className={styles.linkItem}>
@@ -201,7 +217,7 @@ const LinkPage = () => {
                           <p>{links.clicks}</p>
                           <p>clicks</p>
                         </div>
-                        <div className={styles.deleteIcon} onClick={() => deleteLink(links._id)}>
+                        <div className={styles.deleteIcon} onClick={() =>deleteLink(links._id, active)}>
                           <i className="fa-solid fa-trash"></i>
                         </div>
                       </div>
@@ -249,13 +265,20 @@ const LinkPage = () => {
             </section>
           </div>
         </div>
+        <button
+        className={styles.phonePreviewButton}
+        onClick={() => setShowPhonePreview(!showPhonePreview)}
+      >
+        {showPhonePreview ? "Hide Preview" : "Show Phone Preview"}
+      </button>
+        
         <div className={styles.PhonePreview}>
           <PhonePreview links={links} color={selectedColor} />
         </div>
 
         <AddLinkModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(!isModalOpen)}
           onAdd={handleAddLink}
           updateId = {currentId}
           type={modalType}
