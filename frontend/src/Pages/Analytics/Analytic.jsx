@@ -1,9 +1,14 @@
 import React from 'react'
+import styles from './Analytic.module.css'
+import PhonePreview from '../../components/PhonePreview/PhonePreview'
 
 const Analytic = () => {
   return (
+    <div className={styles.Analytic}>
     <div>
-      <h1> im analytics</h1>
+        <PhonePreview/>
+
+    </div>
     </div>
   )
 }

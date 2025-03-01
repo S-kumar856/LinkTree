@@ -78,7 +78,7 @@ const Settings = () => {
 
 
   return (
-    <div className={styles.container}>
+    <div className={styles.setttingContainer}>
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.activeTab}>Edit Profile</span>

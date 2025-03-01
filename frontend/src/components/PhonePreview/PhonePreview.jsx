@@ -6,7 +6,7 @@ import sprakImg from '../../assets/spark.png'
 import { FaShoppingCart } from 'react-icons/fa';
 import { useAppContext } from '../AppContext';
 
-const PhonePreview = ({ links, color }) => {
+const PhonePreview = ({ links = [], color, selectedLayout}) => {
   const [active, setActive] = useState('link');
   const { userRegisterData } = useAppContext();
   
@@ -48,7 +48,7 @@ const PhonePreview = ({ links, color }) => {
             </div>
           </div>
 
-          <div className={styles.linksSection}>
+          <div className={`${styles.linksSection} ${styles[selectedLayout]}`}>
             {links
             .filter((link) => link.type === active)
             .map((link, index) => (
@@ -86,7 +86,7 @@ const PhonePreview = ({ links, color }) => {
               </>
             ))}
           </div>
-
+      
           <div className={styles.footer}>
             <div className={styles.getConnected}>
               <button>Get Connected</button>

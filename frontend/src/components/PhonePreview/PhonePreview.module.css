@@ -1,6 +1,7 @@
 /* PhonePreview.module.css */
  .previewContainer {
     font-family: Poppins;
+
   } 
   
 
@@ -65,6 +66,26 @@
     gap: 12px;
     padding: 2vh;
    
+  }
+
+  .linksSection.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  /* Carousel Layout */
+  .linksSection.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .linksSection.carousel .linkItem {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 200px;
   }
   
   .linkButton {
@@ -167,11 +188,6 @@
   text-align: center;
 }
 
-/* .inner_shopcard img{
-
-} */
-
-
 .productImage {
   width: 100%;
   height: auto;
@@ -214,15 +230,6 @@
 }
 
   
-  @media (max-width: 1200px) {
-    .previewContainer {
-      display: none;
-    }
-    
-    .pageContainer {
-      grid-template-columns: 1fr;
-    }
-  }
   
   @media (max-width: 768px) {
     .modalOverlay {

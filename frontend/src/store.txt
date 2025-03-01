@@ -410,3 +410,224 @@ module.exports = Link;
     "shopTitle": "My Online Store",
     "shopUrl": "https://mystore.com"
 }
+
+
+
+
+
+ {/* <div className={styles.phonePreview}> 
+            <div className={styles.phone}>
+              <div className={styles.phoneHeader}>
+                <div className={styles.shareIcon}>
+                  <Share2 size={18} />
+                </div>
+                <div className={styles.avatarContainer}>
+                  <div className={styles.avatarCircle}>
+                    <img src="/api/placeholder/50/50" alt="avatar" />
+                  </div>
+                  <h3>@opopo_08</h3>
+                </div>
+              </div>
+
+              <div className={styles.phoneContent}>
+                {selectedLayout === "stack" && (
+                  <div className={styles.stackLayout}>
+                    <div className={styles.buttonRow}>
+                      <button
+                        className={`${
+                          styles.linkButton
+                        } ${getButtonStyleClass()} ${styles.active}`}
+                        style={{
+                          backgroundColor:
+                            selectedButtonStyle.startsWith("fill") ||
+                            selectedButtonStyle.startsWith("special")
+                              ? buttonColor
+                              : "transparent",
+                          color: buttonFontColor,
+                        }}
+                      >
+                        link
+                      </button>
+                      <button
+                        className={`${
+                          styles.linkButton
+                        } ${getButtonStyleClass()} ${styles.active}`}
+                        style={{
+                          backgroundColor:
+                            selectedButtonStyle.startsWith("fill") ||
+                            selectedButtonStyle.startsWith("special")
+                              ? buttonColor
+                              : "transparent",
+                          color: buttonFontColor,
+                        }}
+                      >
+                        Shop
+                      </button>
+                    </div>
+
+                    {links.map((item, index) => (
+                      <button
+                        className={`${
+                          styles.mediaLink
+                        } ${getButtonStyleClass()}`}
+                        style={{
+                          backgroundColor:
+                            selectedButtonStyle.startsWith("fill") ||
+                            selectedButtonStyle.startsWith("special")
+                              ? buttonColor
+                              : "transparent",
+                          color: buttonFontColor,
+                        }}
+                      >
+                        <div className={styles.youtubeIcon}></div>
+                        <span>Latest YouTube Video</span>
+                      </button>
+                    ))}
+
+                    <button
+                      className={`${styles.mediaLink} ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.instagramIcon}></div>
+                      <span>Latest Instagram reel</span>
+                    </button>
+                  </div>
+                )}
+
+                {selectedLayout === "grid" && (
+                  <div className={styles.gridLayout}>
+                    <button
+                      className={`${styles.gridItem} ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.youtubeIcon}></div>
+                      <span>Latest YouTube Video</span>
+                    </button>
+                    <button
+                      className={`${styles.gridItem} ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.instagramIcon}></div>
+                      <span>Latest Instagram reel</span>
+                    </button>
+                    <button
+                      className={`${styles.gridItem} ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.youtubeIcon}></div>
+                      <span>Latest YouTube Video</span>
+                    </button>
+                    <button
+                      className={`${styles.gridItem} ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.instagramIcon}></div>
+                      <span>Latest Instagram reel</span>
+                    </button>
+                  </div>
+                )}
+
+                {selectedLayout === "carousel" && (
+                  <div className={styles.carouselLayout}>
+                    <button
+                      className={`${
+                        styles.carouselItem
+                      } ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.carouselIcon}>
+                        <div className={styles.youtubeIconLarge}></div>
+                      </div>
+                      <div className={styles.carouselText}>
+                        <span>Latest</span>
+                        <span>YouTube</span>
+                        <span>Video</span>
+                      </div>
+                    </button>
+                    <button
+                      className={`${
+                        styles.carouselItem
+                      } ${getButtonStyleClass()}`}
+                      style={{
+                        backgroundColor:
+                          selectedButtonStyle.startsWith("fill") ||
+                          selectedButtonStyle.startsWith("special")
+                            ? buttonColor
+                            : "transparent",
+                        color: buttonFontColor,
+                      }}
+                    >
+                      <div className={styles.carouselIcon}>
+                        <div className={styles.instagramIconLarge}></div>
+                      </div>
+                      <div className={styles.carouselText}>
+                        <span>Latest</span>
+                        <span>Instagram</span>
+                        <span>reel</span>
+                      </div>
+                    </button>
+                  </div>
+                )}
+
+                <button
+                  className={`${styles.connectButton} ${getButtonStyleClass()}`}
+                  //   style={{
+                  //     backgroundColor:
+                  //       selectedButtonStyle.startsWith("fill") ||
+                  //       selectedButtonStyle.startsWith("special")
+                  //         ? buttonColor
+                  //         : "#1ab76",
+                  //     color: buttonFontColor,
+                  //   }}
+                >
+                  Get Connected
+                </button>
+                <div className={styles.sparkFooter}>
+                  <div className={styles.sparkLogoSmall}></div>
+                  <span>SPARK</span>
+                </div>
+              </div>
+            </div>
+          </div> */}
